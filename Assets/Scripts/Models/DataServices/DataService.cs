@@ -94,6 +94,7 @@ public class DataService  {
 
     /* ====== */
 	public void CreateDB(){
+
 		_connection.DropTable<Person> ();
 		_connection.CreateTable<Person> ();
 
@@ -123,9 +124,20 @@ public class DataService  {
 				Age = 37
 			}
 		});
-	}
 
-	public IEnumerable<Person> GetPersons(){
+        _connection.CreateTable<Location>();
+        _connection.InsertAll(new[]{
+            new Location{Name = "Forest",Story ="Run Forest"}
+        });
+
+    }
+
+    public IEnumerable<Location> GetLocations()
+    {
+        return _connection.Table<Location>();
+    }
+
+    public IEnumerable<Person> GetPersons(){
 		return _connection.Table<Person>();
 	}
 

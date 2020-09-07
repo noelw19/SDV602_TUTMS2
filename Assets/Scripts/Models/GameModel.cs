@@ -40,6 +40,12 @@ public static class GameModel
         {
             Debug.Log(p.Age + "," + p.Name);
         }
+
+        var locations = ds.GetLocations();
+        foreach(Location l in locations)
+        {
+            Debug.Log(l.Id  + "," + l.Name +"," + l.Story);
+        }
     }
     public static void MakeGame()
     {

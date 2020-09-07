@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using SQLite4Unity3d;
 
 public class Location 
 {
@@ -10,7 +11,8 @@ public class Location
     // what about location assests??
 
     private Dictionary<string, Location> Locations = new Dictionary<string, Location>();
-
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
     public string Name { get => name; set => name = value; }
     public string Story { get => story; set => story = value; }
 
