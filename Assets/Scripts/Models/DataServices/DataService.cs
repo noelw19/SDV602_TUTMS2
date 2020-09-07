@@ -1,7 +1,8 @@
 ﻿using SQLite4Unity3d;
 using UnityEngine;
 using System.Linq;
-
+// DataService is a bridge to SQlite 
+// =================================
 #if !UNITY_EDITOR
 using System.Collections;
 using System.IO;
@@ -102,7 +103,7 @@ public class DataService  {
 			new Person{
 				Id = 1,
 				Name = "Tom",
-				Surname = "Perez",
+				Surname = "Pani",
 				Age = 56
 			},
 			new Person{
