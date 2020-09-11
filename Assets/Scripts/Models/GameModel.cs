@@ -28,39 +28,42 @@ public static class GameModel
 	}
 
     public static Location currentLocale;
-    public static Location startLocation;
+    
     public static Player currentPlayer;
+    public static Location startLocation;
     public static DataService ds = new DataService("Tut2DATABASE.db");
 
-    public static void testDatabase()
+    public static void SetupGame()
     {
         ds.CreateDB();
-        var people = ds.GetPersons();
-        foreach(Person p in people)
-        {
-            Debug.Log(p.Age + "," + p.Name);
-        }
 
-        var locations = ds.GetLocations();
-        foreach(Location l in locations)
-        {
-            Debug.Log(l.Id  + "," + l.Name +"," + l.Story);
-        }
     }
     public static void MakeGame()
     {
-        Location forest, castle;
-        currentLocale = new Location
+        // Only make a  game if we dont have locations
+        if (!GameModel.ds.haveLocations()) {
+
+            Location forest, castle;
+            currentLocale = GameModel.ds.storeNewLocation("Forest", " Run!! ");
+
+            forest = currentLocale;
+
+            forest.addLocation("North", "Castle", "Crocodiles");
+
+            castle = forest.getLocation("North");
+            castle.addLocation("South", forest);
+
+
+            // Make a player record
+            currentPlayer = GameModel.ds.storeNewPlayer("no name yet", "no password",
+                                                         currentLocale.Id, 100, 0);
+            startLocation = currentLocale; // this might be redundant
+        }
+        else
         {
-            Name = "Forest",
-            Story = " Run!!"
-        };
-        forest = currentLocale;
-
-        forest.addLocation("North", "Castle", "Crocodiles");
-
-        castle = forest.getLocation("North");
-        castle.addLocation("South", forest);
+            currentPlayer = GameModel.ds.getPlayer("no name yet"); // will add a variable for player name
+            currentLocale = GameModel.ds.GetLocation(currentPlayer.LocationId);
+        }
 
     }
 

@@ -95,68 +95,115 @@ public class DataService  {
 
     /* ====== */
 	public void CreateDB(){
+        // remove these once testing is sorted
+        _connection.DropTable<Location>(); 
+        _connection.DropTable<ToFrom>();
+        _connection.DropTable<Player>();
 
-		_connection.DropTable<Person> ();
-		_connection.CreateTable<Person> ();
-
-		_connection.InsertAll (new[]{
-			new Person{
-				Id = 1,
-				Name = "Tom",
-				Surname = "Pani",
-				Age = 56
-			},
-			new Person{
-				Id = 2,
-				Name = "Fred",
-				Surname = "Arthurson",
-				Age = 16
-			},
-			new Person{
-				Id = 3,
-				Name = "John",
-				Surname = "Doe",
-				Age = 25
-			},
-			new Person{
-				Id = 4,
-				Name = "Roberto",
-				Surname = "Huertas",
-				Age = 37
-			}
-		});
-
+        // creating the schema
         _connection.CreateTable<Location>();
-        _connection.InsertAll(new[]{
-            new Location{Name = "Forest",Story ="Run Forest"}
-        });
+        _connection.CreateTable<ToFrom>();
+        _connection.CreateTable<Player>();
 
     }
 
+    // Locations and their relationships 
     public IEnumerable<Location> GetLocations()
     {
         return _connection.Table<Location>();
     }
 
-    public IEnumerable<Person> GetPersons(){
-		return _connection.Table<Person>();
-	}
+    public bool haveLocations()
+    {
+        return _connection.Table<Location>().Count() > 0;
+    }
 
-	public IEnumerable<Person> GetPersonsNamedRoberto(){
-		return _connection.Table<Person>().Where(x => x.Name == "Roberto");
-	}
+    public ToFrom GetToFrom(int pFromID, string pDirection)
+    {
+        return _connection.Table<ToFrom>().Where(tf => tf.FromID == pFromID
+                                                      && tf.Direction == pDirection).FirstOrDefault();      
+    }
 
-	public Person GetJohnny(){
-		return _connection.Table<Person>().Where(x => x.Name == "Johnny").FirstOrDefault();
-	}
+    public Location GetLocation(int pLocationID)
+    {
+        return _connection.Table<Location>().Where(l => l.Id == pLocationID).FirstOrDefault();
+    }
 
-	public Person CreatePerson(){
-		var p = new Person{
-				Name = "Johnny",
-				Surname = "Mnemonic",
-				Age = 21
-		};
-		_connection.Insert (p);
-		return p;
-	}
+    public Location storeNewLocation(string pName, string pStory)
+    {
+        Location newLocation = new Location
+        {
+            Name = pName,
+            Story = pStory
+        };
+        _connection.Insert(newLocation); // Store the location 
+        return newLocation;  // return the location
+    }
+    public Location storeLocation(Location pLocation)
+    {
+  
+        _connection.InsertOrReplace(pLocation); // Store the location 
+        return pLocation; 
+    }
+
+
+    public void storeFromTo(int pFromID, int pToID, string pDirection)
+    {
+        ToFrom f = new ToFrom
+        {
+            ToID = pToID,
+            FromID = pFromID,
+            Direction = pDirection
+        };
+        _connection.Insert(f);
+
+    }
+
+
+    // Player
+    public Player storeNewPlayer(string pName,   string pPassword , 
+                            int pLocationId,  int pHealth,
+                            int pWealth)
+    {
+        Player player = new Player
+        {
+            Name = pName,
+            Password = pPassword,
+            LocationId = pLocationId,
+            Health = pHealth,
+            Wealth = pWealth
+
+        };
+        _connection.InsertOrReplace(player);
+        return player;
+    }
+
+    public Player getPlayer(string pPlayerName)
+    {
+        return _connection.Table<Player>().Where(x => x.Name == pPlayerName).FirstOrDefault();
+    }
+
+    //   Example 
+    // public Person GetJohnny(){
+    //	return _connection.Table<Person>().Where(x => x.Name == "Johnny").FirstOrDefault();
+    //}
+
+    //public Person CreatePerson(){
+    //	var p = new Person{
+    //			Name = "Johnny",
+    //			Surname = "Mnemonic",
+    //			Age = 21
+    //	};
+    //	_connection.Insert (p);
+    //	return p;
+    //}
+
+    //public IEnumerable<Person> GetPersons(){
+    //	return _connection.Table<Person>();
+    //}
+
+    //public IEnumerable<Person> GetPersonsNamedRoberto(){
+    //	return _connection.Table<Person>().Where(x => x.Name == "Roberto");
+    //}
+
 }

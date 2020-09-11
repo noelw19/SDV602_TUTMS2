@@ -9,7 +9,7 @@ public class ConnectGameModel : MonoBehaviour
     void Start()
     {
         GameModel.Name = "The Game Name";
-        GameModel.testDatabase();
+        GameModel.SetupGame();
         GameModel.MakeGame();
     }
 
