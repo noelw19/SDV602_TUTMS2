@@ -113,6 +113,11 @@ public class DataService  {
         return _connection.Table<Location>();
     }
 
+    public Location GetFirstLocation()
+    {
+        Location aLocation = _connection.Table<Location>().FirstOrDefault<Location>();
+        return aLocation;
+    }
     public bool haveLocations()
     {
         return _connection.Table<Location>().Count() > 0;

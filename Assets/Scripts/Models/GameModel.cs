@@ -8,6 +8,7 @@ using System.IO;
 
 
 using System.Text;
+using SQLite4Unity3d;
 
 // Is this a factory?
 
@@ -82,7 +83,8 @@ public static class GameModel
     public static void MakeGame()
     {
         // Only make a  game if we dont have locations
-        if (!GameModel.ds.haveLocations()) {
+        if (!GameModel.ds.haveLocations())
+        {
 
             Location forest, castle;
             currentLocale = GameModel.ds.storeNewLocation("Forest", " Run!! ");
@@ -95,9 +97,10 @@ public static class GameModel
             castle.addLocation("South", forest);
 
 
-             startLocation = currentLocale; // this might be redundant
+            startLocation = currentLocale; // this might be redundant
         }
-
+        else
+            currentLocale = GameModel.ds.GetFirstLocation();
 
     }
 
