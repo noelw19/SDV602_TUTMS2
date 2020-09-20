@@ -96,9 +96,9 @@ public class DataService  {
     /* ====== */
 	public void CreateDB(){
         // remove these once testing is sorted
-        _connection.DropTable<Location>(); 
-        _connection.DropTable<ToFrom>();
-        _connection.DropTable<Player>();
+       // _connection.DropTable<Location>(); 
+       // _connection.DropTable<ToFrom>();
+       // _connection.DropTable<Player>();
 
         // creating the schema
         _connection.CreateTable<Location>();
@@ -129,6 +129,10 @@ public class DataService  {
         return _connection.Table<Location>().Where(l => l.Id == pLocationID).FirstOrDefault();
     }
 
+    public Location GetPlayerLocation (Player aPlayer)
+    {
+        return GetLocation(aPlayer.LocationId);
+    }
     public Location storeNewLocation(string pName, string pStory)
     {
         Location newLocation = new Location
